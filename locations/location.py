@@ -33,9 +33,7 @@ class Location:
 
     def display_actions(self):
         d.clear_speech_box()
-        d.set_location_text(self.name)
-        if self.character:
-            d.set_description_text(self.character.name + " is in front of you")
+        self.display_title_bar()
 
         print "1. Examine"
         print "2. Move"
@@ -94,8 +92,12 @@ class Location:
                 d.read_dialog_script(self.dscript['intro'])
             self.has_changed = False
 
-        d.set_location_text(self.name)
         self.display_actions()
+
+    def display_title_bar(self):
+        d.set_location_text(self.name)
+        if self.character:
+            d.set_description_text(self.character.name + " is in front of you")
 
     def __str__(self):
         return self.name
