@@ -1,0 +1,19 @@
+{
+    "intro": [
+        {"character": "vic", "text": "I didn't do it! I swear!"},
+        {"character": "vic", "text": "It all happened at the carnival last night, you should check it out."}
+    ],
+    "talking_points": [
+        {
+            "title": "What happened",
+            "script": [
+                {"character": "vic", "text": "I don't know what happened"},
+                {"character": "vic", "text": "I was sleeping, the next thing I know I am here"},
+                {"character": "pla", "text": "Don't worry, I will get to the bottom of this"}
+            ]
+        }
+    ],
+    "unlocks": [
+        {"type": "location", "id": "car", "action": "set_active"}
+    ]
+}

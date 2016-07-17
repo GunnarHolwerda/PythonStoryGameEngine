@@ -1,0 +1,18 @@
+{
+    "intro": [
+        {"character": "det", "text": "Hey there buddy!"},
+        {"character": "pla", "text": "Howdy detective."}
+    ],
+    "talking_points": [
+        {
+            "title": "What happened",
+            "script": [
+                {"character": "det", "text": "John Doe was murdered last night"},
+                {"character": "det", "text": "It was pretty brutal"},
+                {"character": "pla", "text": "That is unbelievable"}
+            ]
+        }
+    ],
+    "unlocks": [
+    ]
+}

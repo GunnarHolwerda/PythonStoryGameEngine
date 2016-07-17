@@ -2,6 +2,7 @@
 Class to represent a location in the game
 """
 
+import json
 import dialog as d
 import msvcrt as m
 
@@ -13,6 +14,7 @@ class Location:
         self.id = dict['id']
         # Add ability to include examine text and change over time or use a dscript
         self.examine_text = "You are now in the " + self.name
+        self.dscript = None
         self.character = None
         self.has_changed = True
 
@@ -22,6 +24,9 @@ class Location:
     def is_active(self):
         return self.active
 
+    def set_dscript(self, dscript):
+        self.dscript = json.load(file('dialog_scripts/' + dscript))
+
     def set_character(self, character):
         self.character = character
         self.has_changed = True
@@ -29,6 +34,8 @@ class Location:
     def display_actions(self):
         d.clear_speech_box()
         d.set_location_text(self.name)
+        if self.character:
+            d.set_description_text(self.character.name + " is in front of you")
 
         print "1. Examine"
         print "2. Move"
@@ -65,15 +72,15 @@ class Location:
 
         GameState.move(destinations[selection - 1].id)
 
-
-
     def examine(self):
         d.speech_box(self.examine_text)
 
     def talk(self):
+        #TODO: Display talking points outlined in characters dscript
         pass
 
     def present(self):
+        #TODO: Create player object that has inventory
         pass
 
     def start(self):
@@ -81,6 +88,12 @@ class Location:
             d.speech_box(self.examine_text, dismissable=False)
             d.pause(3)
             d.clear_speech_box()
+            # This allows you to have an intro where the player talks to
+            # themself, but no other character is present
+            if self.dscript:
+                d.read_dialog_script(self.dscript['intro'])
+            self.has_changed = False
+
         d.set_location_text(self.name)
         self.display_actions()
 

@@ -9,11 +9,14 @@ import msvcrt as m
 import threading
 from pprint import pprint
 
-def read_dialog_script(filename):
+def read_dialog_script(dialog):
     """
     Reads in JSON array of dialog boxes to be spoken
     """
-    dialog = json.load(file(filename))
+    if not dialog:
+        # Return if no dialog given (i.e. no intro script)
+        return
+
     cur_character = ""
     for line in dialog:
         if line['character'] != cur_character:
@@ -65,7 +68,7 @@ def get_selection(num_items):
 def typewriter(text, sleep_time=0.06, end="\n"):
     for letter in text:
         sys.stdout.write(letter)
-        time.sleep(i)
+        time.sleep(sleep_time)
     sys.stdout.write(end)
 
 
@@ -81,6 +84,9 @@ def pause(seconds):
 
 def set_location_text(location_text):
     print(location_text)
+
+def set_description_text(description_text):
+    print(description_text)
 
 def wait(correct_key=""):
     """

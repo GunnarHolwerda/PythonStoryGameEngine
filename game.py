@@ -5,6 +5,7 @@ Phoenix Wright Ace Attorney
 
 import dialog as d
 import logging
+import json
 from game_state import GameState
 
 
@@ -15,7 +16,8 @@ class Game:
         format='%(asctime)s - %(levelname)s - %(message)s')
         #logging.disable(logging.CRITICAL)
         GameState.load_map_file("locations\maps\intro.map")
-        GameState.CURRENT_LOCATION.start()
+        GameState.start_event_script("event_script.escript")
+
 
 if __name__ == "__main__":
     Game().play()

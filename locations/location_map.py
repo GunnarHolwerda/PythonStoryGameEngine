@@ -24,8 +24,6 @@ class Map:
 
         logging.debug("Loaded map file from " + filename)
 
-        return self.load_location(map_dict['start_location'])
-
     def add_location(self, location):
         if type(location) is Location:
             raise Exception("Non location was added to Map")
