@@ -38,7 +38,7 @@ def speech_box(text, dismissable=True):
             display_wait()
 
 def display_wait():
-    typewriter("...", sleep_time=1, end="\r")
+    typewriter("...", sleep_time=0.06, end="\r")
     sys.stdout.write("\033[J")
 
 def list_box(title, items):
