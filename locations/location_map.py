@@ -4,69 +4,61 @@ Class representing all possible locations for the current story
 
 from location import Location
 import json
+import logging
 from pprint import pprint
 
-LOCATIONS = {}
-EDGES = []
-CURRENT_LOCATION = None
+class Map:
 
-def load_map_file(filename):
-    map = json.load(file(filename))
-    for location in map['locations']:
-        add_location(Location(location))
+    def __init__(self):
+        self.locations = {}
+        self.edges = []
+        self.current_location = None
 
-    for edge in map['edges']:
-        add_edge(edge['start'], edge['end'])
+    def load_map_file(self, filename):
+        map_dict = json.load(file(filename))
+        for location in map_dict['locations']:
+            self.add_location(Location(location))
 
-    set_current_location(map['start_location'])
+        for edge in map_dict['edges']:
+            self.add_edge(edge['start'], edge['end'])
 
-def add_location(location):
-    if type(location) is Location:
-        raise Exception("Non location was added to Map")
-    if location.name in LOCATIONS.keys():
-        raise Exception("Attempted to add location that already exists %s" % location.name)
-    LOCATIONS[location.name] = location
+        logging.debug("Loaded map file from " + filename)
 
-def add_edge(location_start_id, location_end_id):
-    start = load_location(location_start_id)
-    end = load_location(location_end_id)
-    EDGES.append(Edge(start, end))
+        return self.load_location(map_dict['start_location'])
 
-def move(new_location):
-    if new_location not in get_destinations_for_location(CURRENT_LOCATION):
-        raise Exception("Attempted to move to location with no path")
+    def add_location(self, location):
+        if type(location) is Location:
+            raise Exception("Non location was added to Map")
+        if location.name in self.locations.keys():
+            raise Exception("Attempted to add location that already exists %s" % location.name)
+        self.locations[location.id] = location
 
-    set_current_location(new_location)
+    def add_edge(self, location_start_id, location_end_id):
+        if location_start_id == location_end_id:
+            raise Exception("Attemted to add an Edge between the same location")
+        self.edges.append(Edge(self.load_location(location_start_id), self.load_location(location_end_id)))
 
-def set_current_location(location_id):
-    location = load_location(location_id)
+    def get_destinations_for_location(self, location_id):
+        """
+            Returns array of possible destinations for the location given
 
-    if not location.is_active():
-        raise Exception("Tried to set current location to not active location")
+            :param location_id: str,  the location_id to find destinations for
+            :return: list of locations
+        """
+        destinations = []
+        location = self.load_location(location_id)
+        for edge in self.edges:
+            if edge.contains(location) == 1:
+                destinations.append(edge.end)
+            elif edge.contains(location) == 2:
+                destinations.append(edge.start)
 
-    CURRENT_LOCATION = location
-    CURRENT_LOCATION.start()
+        return destinations
 
-def get_destinations_for_location(location):
-    """
-        Returns array of possible destinations for the location given
-
-        :param : location, the location to find destinations for
-        :return: list of locations
-    """
-    destinations = []
-    for edge in EDGES:
-        if edge.contains(location) == 1:
-            destinations.append(edge.end)
-        elif edge.contains(location) == 2:
-            destinations.append(edge.start)
-
-    return destinations
-
-def load_location(location_id):
-    if location_id not in LOCATIONS.keys():
-        raise Exception("Could not find location with id: %s" % location_id)
-    return LOCATIONS[location_id]
+    def load_location(self, location_id):
+        if location_id not in self.locations.keys():
+            raise Exception("Could not find location with id: %s" % location_id)
+        return self.locations[location_id]
 
 
 class Edge:

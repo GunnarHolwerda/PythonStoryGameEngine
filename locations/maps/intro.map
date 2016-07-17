@@ -1,13 +1,13 @@
 {
-    "start_location": "Law Office",
+    "start_location": "law",
     "locations": [
-        { "name": "Law Office", "active": true},
-        { "name": "Detention Center", "active": true},
-        { "name": "Carnival", "active": false}
+        { "id": "law", "name": "Law Office", "active": true},
+        { "id": "det", "name": "Detention Center", "active": true},
+        { "id": "car", "name": "Carnival", "active": false}
     ],
     "edges": [
-        { "start": "Law Office", "end": "Detention Center"},
-        { "start": "Law Office", "end": "Carnival"},
-        { "start": "Detention Center", "end": "Carnival"}
+        { "start": "law", "end": "det"},
+        { "start": "law", "end": "car"},
+        { "start": "det", "end": "car"}
     ]
 }
