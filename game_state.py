@@ -14,6 +14,22 @@ class GameState:
     EVENTS = []
 
     @staticmethod
+    def update(changes):
+        """
+        Updates the gamestate using a dictionary passed in as the argument
+        all dictionaries passed must contain the 'action' and 'type' keys
+        to tell what sort of update must be completed
+        """
+        # TODO: Figure out a better what to handle this
+        for change in changes:
+            if change['type'] == "location":
+                # Changes to a location must include a location id
+                location = GameState.GAME_MAP.load_location(change['id'])
+                if change['action'] == 'set_active':
+                    location.set_active()
+
+
+    @staticmethod
     def load_map_file(filename):
         GameState.GAME_MAP.load_map_file(filename)
 

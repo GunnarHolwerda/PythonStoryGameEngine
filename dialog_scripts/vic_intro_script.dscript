@@ -1,7 +1,13 @@
 {
     "intro": [
         {"character": "vic", "text": "I didn't do it! I swear!"},
-        {"character": "vic", "text": "It all happened at the carnival last night, you should check it out."}
+        {
+            "character": "vic",
+            "text": "It all happened at the carnival last night, you should check it out.",
+            "unlocks": [
+                {"type": "location", "id": "car", "action": "set_active"}
+            ]
+        }
     ],
     "talking_points": [
         {

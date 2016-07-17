@@ -21,6 +21,9 @@ class Location:
     def get_examine_text(self):
         return self.examine_text
 
+    def set_active(self):
+        self.active = True
+
     def is_active(self):
         return self.active
 
