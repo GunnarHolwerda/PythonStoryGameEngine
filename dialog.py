@@ -8,6 +8,7 @@ import json
 import msvcrt as m
 import threading
 from pprint import pprint
+from character import Character
 
 def read_dialog_script(dialog):
     """
@@ -17,18 +18,17 @@ def read_dialog_script(dialog):
         # Return if no dialog given (i.e. no intro script)
         return
 
-    cur_character = ""
     for line in dialog:
-        if line['character'] != cur_character:
-            cur_character = line['character']
-            sys.stdout.write(cur_character + "\n")
-        speech_box(line['text'])
+        char = Character.load_character(line['character'])
+        speech_box(line['text'], speaker=char.name)
 
-def speech_box(text, dismissable=True):
+def speech_box(text, dismissable=True, speaker=""):
     """
     Prints text given to the console, erasing the any previous text from the console
     """
     clear_speech_box()
+    if speaker:
+        text = speaker + ": " + text
     typewriter(text)
     sys.stdout.flush()
     if dismissable:
