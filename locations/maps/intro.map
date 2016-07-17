@@ -1,0 +1,13 @@
+{
+    "start_location": "Law Office",
+    "locations": [
+        { "name": "Law Office", "active": true},
+        { "name": "Detention Center", "active": true},
+        { "name": "Carnival", "active": false}
+    ],
+    "edges": [
+        { "start": "Law Office", "end": "Detention Center"},
+        { "start": "Law Office", "end": "Carnival"},
+        { "start": "Detention Center", "end": "Carnival"}
+    ]
+}
