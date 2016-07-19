@@ -28,6 +28,11 @@ def read_dialog_script(dialog):
 def speech_box(text, dismissable=True, speaker=""):
     """
     Prints text given to the console, erasing the any previous text from the console
+
+    :param text: str, the text to be written in the speechbox
+    :param dismissable: bool, if True requires enter to be pressed to move forward
+        (D:True)
+    :param speaker: str, the name of the character who is talking (D: "")
     """
     clear_speech_box()
     if speaker:
@@ -44,12 +49,20 @@ def speech_box(text, dismissable=True, speaker=""):
             display_wait()
 
 def display_wait():
+    """
+    Displays three dots appearing from left to right
+    """
     typewriter("...", sleep_time=0.06, end="\r")
     sys.stdout.write("\033[J")
 
 def list_box(title, items):
     """
-    Displays text box with numbers next to each item in items, returns selected item
+    Displays text box with numbers next to each item in items
+
+    :param title: str, the title for the list_box
+    :param items: list, the list of items to be displayed
+
+    :returns the number selected by the player
     """
     clear_speech_box()
     set_location_text(title)
@@ -62,6 +75,11 @@ def list_box(title, items):
     return get_selection(len(items))
 
 def get_selection(num_items):
+    """
+    Waits for selection input from a list and returns the selection number
+
+    :param num_items: int, the total number of items that are being displayed
+    """
     valid = False
     while not valid:
         key = m.getch()
@@ -69,6 +87,13 @@ def get_selection(num_items):
             return int(key)
 
 def typewriter(text, sleep_time=0.06, end="\n"):
+    """
+    Prints the text given in typewriter format (one letter at a time)
+
+    :param text: str, the text to be printed
+    :param sleep_time: float, the time to sleep between printing each letter (D: 0.06)
+    :param end: str, the end of the string (D: "\n")
+    """
     for letter in text:
         sys.stdout.write(letter)
         time.sleep(sleep_time)
@@ -76,6 +101,9 @@ def typewriter(text, sleep_time=0.06, end="\n"):
 
 
 def clear_speech_box():
+    """
+    Clears the whole terminal to a blank screen and places cursor in top left
+    """
     for _ in xrange(4):
         sys.stdout.write('\r')
         sys.stdout.write("\033[2J") # ANSI Escape code to clear terminal
@@ -83,8 +111,14 @@ def clear_speech_box():
         sys.stdout.flush()
 
 def pause(seconds):
+    """
+    Sleeps for the specified number of seconds
+
+    :param seconds: float, num of seconds to sleep for
+    """
     time.sleep(seconds)
 
+# TODO: Fix these next two methods to be a bit more scientific and not just print shit yo
 def set_location_text(location_text):
     print(location_text)
 
@@ -93,7 +127,9 @@ def set_description_text(description_text):
 
 def wait(correct_key=""):
     """
-    Waits for enter key
+    Waits for enter key or spacebar
+
+    :param correct_key: str, the specific key being waited on (D: "")
     """
     key = m.getch()
     if key.isspace():
