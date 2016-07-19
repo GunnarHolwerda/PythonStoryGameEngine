@@ -44,9 +44,9 @@ class Map:
 
         :param location: Location, the location object to add
         """
-        if isinstance(location, Location):
+        if not isinstance(location, Location):
             raise Exception("Non location was added to Map")
-        if location.name in self.locations.keys():
+        if location.id in self.locations.keys():
             raise Exception("Attempted to add location that already exists %s" % location.name)
         self.locations[location.id] = location
 

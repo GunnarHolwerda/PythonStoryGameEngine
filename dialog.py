@@ -8,7 +8,6 @@ import threading
 import msvcrt as m
 from pprint import pprint
 from character import Character
-from game_state import GameState
 
 def read_dialog_script(dialog):
     """
@@ -22,6 +21,7 @@ def read_dialog_script(dialog):
         char = Character.load_character(line['character'])
         speech_box(line['text'], speaker=char.name)
         if 'unlocks' in line:
+            from game_state import GameState
             GameState.update(line['unlocks'])
 
 def speech_box(text, dismissable=True, speaker=""):
