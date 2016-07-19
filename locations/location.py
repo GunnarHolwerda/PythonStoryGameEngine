@@ -46,7 +46,7 @@ class Location:
         :param dscript: str, filename for dscript to be loaded
         """
         self.dscript = json.load(file('dialog_scripts/' + dscript))
-        # TODO: Set has_changed to true here
+        self.has_changed = True
 
     def set_character(self, character):
         """
@@ -127,8 +127,8 @@ class Location:
 
     def start(self):
         """
-        Starts the dscript for the current location. This method is called everytime the player moves 
-        to the location.
+        Starts the dscript for the current location.
+        This method is called everytime the player moves to the location.
         """
         if self.has_changed:
             # If the location has changed since last visit, display examine text and run new
@@ -150,7 +150,8 @@ class Location:
         """
         Sets the title bar for the current location
         """
-        # TODO: Move this to dialog and combine the set_location_text and set_description_text functions
+        # TODO: Move this to dialog and combine the set_location_text and set_description_text
+        # functions
         d.set_location_text(self.name)
         if self.character:
             d.set_description_text(self.character.name + " is in front of you")

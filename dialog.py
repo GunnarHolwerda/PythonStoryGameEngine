@@ -4,9 +4,8 @@ This file holds functions used in the creation of dialog for the game
 
 import time
 import sys
-import json
-import msvcrt as m
 import threading
+import msvcrt as m
 from pprint import pprint
 from character import Character
 from game_state import GameState
@@ -120,10 +119,10 @@ def pause(seconds):
 
 # TODO: Fix these next two methods to be a bit more scientific and not just print shit yo
 def set_location_text(location_text):
-    print(location_text)
+    print location_text
 
 def set_description_text(description_text):
-    print(description_text)
+    print description_text
 
 def wait(correct_key=""):
     """
