@@ -4,7 +4,7 @@ Class representing all possible locations for the current story
 
 import json
 import logging
-from pprint import pprint
+import pprint
 from location import Location
 
 class Map:
@@ -78,6 +78,8 @@ class Map:
                 destinations.append(edge.end)
             elif edge.contains(location) == 2:
                 destinations.append(edge.start)
+
+        logging.debug(pprint.pformat(destinations))
 
         return destinations
 

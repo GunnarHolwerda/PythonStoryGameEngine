@@ -69,6 +69,7 @@ def list_box(title, items):
     text = ""
     for i in items:
         text += str(count) + ". " + str(i) + "\n"
+        count += 1
     sys.stdout.write(text)
 
     return get_selection(len(items))

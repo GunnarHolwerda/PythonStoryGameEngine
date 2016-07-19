@@ -32,6 +32,7 @@ class GameState:
         # execute the needed changes???
         for change in changes:
             if change['type'] == "location":
+                logging.debug("Unlocking location %s.", change['id'])
                 # Changes to a location must include a location id
                 location = GameState.GAME_MAP.load_location(change['id'])
                 if change['action'] == 'set_active':
