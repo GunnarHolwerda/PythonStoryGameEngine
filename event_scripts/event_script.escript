@@ -22,5 +22,6 @@
 		}
 	],
     "character_script": "character_script.cscript",
-    "map": "intro.map"
+    "map": "intro.map",
+    "item_script": "item_script.iscript"
 }

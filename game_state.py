@@ -6,6 +6,8 @@ import logging
 import json
 from locations import Map
 from character import Character
+from item import Item
+from player import Player
 
 class GameState(object):
     """
@@ -13,10 +15,11 @@ class GameState(object):
     unlocked locations, manages current location, manages what events are
     occuring
     """
-
+    #TODO: Maybe hold all loaded characters and items here? locations too?
     GAME_MAP = Map()
     CURRENT_LOCATION = None
     EVENTS = []
+    PLAYER = None
 
     @staticmethod
     def update(changes):
@@ -28,7 +31,7 @@ class GameState(object):
         :param changes: list, list of changes dictionaries
         """
         # TODO: Figure out a better what to handle this
-        # TODO: Create class for each change then have a strategy pattern to
+        # IDEA: Create class for each change then have a strategy pattern to
         # execute the needed changes???
         for change in changes:
             if change['type'] == "location":
@@ -48,6 +51,23 @@ class GameState(object):
         GameState.GAME_MAP.load_map_file(filename)
 
     @staticmethod
+    def initialize_game(escript):
+        """
+        Loads in map, character_script, item_script and intializes player object.
+        Also sets the starting location of the game
+
+        :param escript: dict, dictionary loaded from escript that specifies files
+        """
+        # Load map, characters, items, and player
+        GameState.GAME_MAP.load_map_file(escript['map'])
+        Character.load_character_script(escript['character_script'])
+        Item.load_items(escript['item_script'])
+        GameState.PLAYER = Player()
+
+        # Update current location
+        GameState.CURRENT_LOCATION = GameState.GAME_MAP.load_location(escript['start_location'])
+
+    @staticmethod
     def start_event_script(filename):
         """
         Initializes the current event script. One event script will be given for each campaign.
@@ -56,15 +76,10 @@ class GameState(object):
 
         :param filename: str, the filename of the eventscript in the event_scripts directory
         """
-        # TODO: Event script should also specify map file at some point
         logging.debug("Loading in event script " + filename)
         escript = json.load(file("event_scripts/" + filename))
-        # Load map
-        GameState.load_map_file(escript['map'])
-        # Update current location
-        GameState.CURRENT_LOCATION = GameState.GAME_MAP.load_location(escript['start_location'])
-        # Load characters
-        Character.load_character_script(escript['character_script'])
+        # Load map, characters, items, and player
+        GameState.initialize_game(escript)
 
         # Initialize the first event
         GameState.EVENTS = escript['events']
@@ -76,7 +91,6 @@ class GameState(object):
             if loc['dscript']:
                 location.set_dscript(loc['dscript'])
 
-        logging.debug("Start location is " + GameState.CURRENT_LOCATION.name)
         GameState.CURRENT_LOCATION.start()
 
     @staticmethod

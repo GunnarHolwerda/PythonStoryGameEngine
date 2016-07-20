@@ -35,4 +35,9 @@ class Dscript(object):
         return self.talking_points[talking_point_index]['script']
 
     def get_intro(self):
+        """
+        Returns the script for the info sequence from the dscript
+
+        :return list, dialog script for intro
+        """
         return self.intro
