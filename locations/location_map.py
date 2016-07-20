@@ -73,7 +73,7 @@ class Map(object):
         location = self.load_location(location_tag)
         # Iterate over each edge
         for edge in self.edges:
-            destination = edge.contains(location)
+            destination = edge.get_destination_from_location(location)
             # If a destination was found add it, otherwise don't
             if destination:
                 destinations.append(destination)
@@ -99,7 +99,7 @@ class Edge(object):
         self.start = start
         self.end = end
 
-    def contains(self, location):
+    def get_destination_from_location(self, location):
         """
         Checks if a location is within the edge
 
