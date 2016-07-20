@@ -53,7 +53,7 @@ def display_wait():
     """
     Displays three dots appearing from left to right
     """
-    typewriter("...", sleep_time=0.06, end="\r")
+    typewriter("...", sleep_time=0.18, end="\r")
     sys.stdout.write("\033[J")
 
 def list_box(title, items):
@@ -66,7 +66,7 @@ def list_box(title, items):
     :returns the 0 based index selection, -1 to move back
     """
     clear_speech_box()
-    set_location_text(title)
+    set_title_bar(title)
     count = 1
     text = ""
     for i in items:
@@ -91,7 +91,7 @@ def get_selection(num_items):
         if key in [str(x) for x in range(0, num_items + 1)]:
             return int(key) - 1
 
-def typewriter(text, sleep_time=0.06, end="\n"):
+def typewriter(text, sleep_time=0.03, end="\n"):
     """
     Prints the text given in typewriter format (one letter at a time)
 
@@ -99,6 +99,8 @@ def typewriter(text, sleep_time=0.06, end="\n"):
     :param sleep_time: float, the time to sleep between printing each letter (D: 0.06)
     :param end: str, the end of the string (D: "\n")
     """
+    #TODO: Figure out a better way to create the type writer so that a button press can
+    # complete the phrase immediately
     for letter in text:
         sys.stdout.write(letter)
         time.sleep(sleep_time)
@@ -124,16 +126,15 @@ def pause(seconds):
     time.sleep(seconds)
 
 def set_title_bar(title, description=""):
+    """
+    Sets the title bar and description if specified
+
+    :param title: str, the string to display on the top line
+    :param description: str, the string to display on the second line (D: "")
+    """
     sys.stdout.write(title + "\n")
     if description:
         sys.stdout.write(description + "\n")
-
-# TODO: Fix these next two methods to be a bit more scientific and not just print shit yo
-def set_location_text(location_text):
-    print location_text
-
-def set_description_text(description_text):
-    print description_text
 
 def wait(correct_key=""):
     """
