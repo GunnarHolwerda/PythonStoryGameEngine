@@ -7,7 +7,7 @@ import logging
 from game_state import GameState
 
 
-class Game:
+class Game(object):
     """
     The class the runs the actual game. play() is essentially main
     """

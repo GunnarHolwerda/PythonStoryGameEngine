@@ -7,7 +7,7 @@ import dialog as d
 import msvcrt as m
 from dscript import Dscript
 
-class Location:
+class Location(object):
     """
     Represents a location in the game
     """
@@ -15,7 +15,7 @@ class Location:
     def  __init__(self, mscript):
         self.name = mscript['name']
         self.active = mscript['active']
-        self.id = mscript['id']
+        self.tag = mscript['id']
         # Add ability to include examine text and change over time or use a dscript
         self.examine_text = "You are now in the " + self.name
         self.dscript = None
@@ -65,7 +65,10 @@ class Location:
         # TOOD: Possibly rework this into Dialog and just pass the location as a parameter
         # into the function
         d.clear_speech_box()
-        self.display_title_bar()
+        if self.character:
+            d.set_title_bar(self.name, description=self.character.name + " is in front of you")
+        else:
+            d.set_title_bar(self.name)
 
         print "1. Examine"
         print "2. Move"
@@ -106,11 +109,14 @@ class Location:
         # TODO: Display some sort of back button to go back to actions
         from game_state import GameState
         # Load destinations for the current location from the current GAME_MAP
-        destinations = GameState.GAME_MAP.get_destinations_for_location(self.id)
+        destinations = GameState.GAME_MAP.get_destinations_for_location(self.tag)
         # Display list box for the possible destinations
         selection = d.list_box("Move to...", destinations)
+        if selection == -1:
+            return
+
         # Updates the current location in the GameState
-        GameState.update_current_location(destinations[selection].id)
+        GameState.update_current_location(destinations[selection].tag)
 
     def examine(self):
         """
@@ -120,13 +126,12 @@ class Location:
 
     def talk(self):
         """
-        Handles all logic for the taking action
+        Handles all logic for the talking action
         """
-        #TODO: Display talking points outlined in characters dscript
         talking_points = self.dscript.get_talking_points()
-        import pprint
-        logging.debug(pprint.pformat(talking_points))
         index = d.list_box("Talk about", talking_points)
+        if index == -1:
+            return
         script = self.dscript.get_script_for_tp(index)
         d.read_dialog_script(script)
 
@@ -134,6 +139,9 @@ class Location:
         # been read by the player
 
     def present(self):
+        """
+        Handles the logic for the present action
+        """
         #TODO: Create player object that has inventory
         pass
 
@@ -158,15 +166,25 @@ class Location:
 
         self.display_actions()
 
-    def display_title_bar(self):
-        """
-        Sets the title bar for the current location
-        """
-        # TODO: Move this to dialog and combine the set_location_text and set_description_text
-        # functions
-        d.set_location_text(self.name)
-        if self.character:
-            d.set_description_text(self.character.name + " is in front of you")
-
     def __str__(self):
         return self.name
+
+    """
+    Code necessary for checking if two locations are equal to another
+    Found at: http://bit.ly/29sdPnH
+    """
+    def __eq__(self, other):
+        """Override the default Equals behavior"""
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return NotImplemented
+
+    def __ne__(self, other):
+        """Define a non-equality test"""
+        if isinstance(other, self.__class__):
+            return not self.__eq__(other)
+        return NotImplemented
+
+    def __hash__(self):
+        """Override the default hash behavior (that returns the id or the object)"""
+        return hash(tuple(sorted(self.__dict__.items())))

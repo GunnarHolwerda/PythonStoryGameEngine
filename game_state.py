@@ -7,7 +7,7 @@ import json
 from locations import Map
 from character import Character
 
-class GameState:
+class GameState(object):
     """
     This class represents the current state of the game. Keeps track of
     unlocked locations, manages current location, manages what events are

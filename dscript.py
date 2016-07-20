@@ -4,7 +4,7 @@ This file houses the class for the object representation of the dscript
 
 import json
 
-class Dscript:
+class Dscript(object):
     """
     Object that is created by parsing a dscript
     """

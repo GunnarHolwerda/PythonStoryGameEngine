@@ -5,7 +5,7 @@ Represents a character in the game
 import json
 import logging
 
-class Character:
+class Character(object):
     """
     Reperesents a Character in the game, also keeps track of all
     characters in the campagin in Character.CHARACTERS

@@ -7,7 +7,7 @@ import logging
 import pprint
 from location import Location
 
-class Map:
+class Map(object):
     """
     Class that will create a graph of locations to be used for
     navigation within the game
@@ -46,53 +46,51 @@ class Map:
         """
         if not isinstance(location, Location):
             raise Exception("Non location was added to Map")
-        if location.id in self.locations.keys():
+        if location.tag in self.locations.keys():
             raise Exception("Attempted to add location that already exists %s" % location.name)
-        self.locations[location.id] = location
+        self.locations[location.tag] = location
 
-    def add_edge(self, location_start_id, location_end_id):
+    def add_edge(self, location_start_tag, location_end_tag):
         """
         Adds an edge to the graph
 
-        :param location_start_id: str, the id for the starting location
-        :param location_end_id: str, the id for the end location
+        :param location_start_tag: str, the tag for the starting location
+        :param location_end_tag: str, the tag for the end location
         """
-        if location_start_id == location_end_id:
+        if location_start_tag == location_end_tag:
             raise Exception("Attemted to add an Edge between the same location")
         self.edges.append(
-            Edge(self.load_location(location_start_id), self.load_location(location_end_id)))
+            Edge(self.load_location(location_start_tag), self.load_location(location_end_tag)))
 
-    def get_destinations_for_location(self, location_id):
+    def get_destinations_for_location(self, location_tag):
         """
             Returns array of possible destinations for the location given
 
-            :param location_id: str, the location_id to find destinations for
+            :param location_tag: str, the location_tag to find destinations for
             :return: list of locations
         """
         destinations = []
-        location = self.load_location(location_id)
+        location = self.load_location(location_tag)
         # Iterate over each edge
         for edge in self.edges:
-            # Check if the edge contains the location and add to destinations
-            if edge.contains(location) == 1:
-                destinations.append(edge.end)
-            elif edge.contains(location) == 2:
-                destinations.append(edge.start)
-
+            destination = edge.contains(location)
+            # If a destination was found add it, otherwise don't
+            if destination:
+                destinations.append(destination)
         return destinations
 
-    def load_location(self, location_id):
+    def load_location(self, location_tag):
         """
-        Get the location object for the map using the location_id
+        Get the location object for the map using the location_tag
 
-        :param location_id: str, the id of the location you want to load
+        :param location_tag: str, the tag of the location you want to load
         """
-        if location_id not in self.locations.keys():
-            raise Exception("Could not find location with id: %s" % location_id)
-        return self.locations[location_id]
+        if location_tag not in self.locations.keys():
+            raise Exception("Could not find location with tag: %s" % location_tag)
+        return self.locations[location_tag]
 
 
-class Edge:
+class Edge(object):
     """
     Represents an edge within the map from one location to another
     """
@@ -107,20 +105,17 @@ class Edge:
 
         :param location: Location, the location object to check for
 
-        :return 1, if location is start, 2 if location is end, 0 if not found
+        :return the opposite end of the edge if the location is found, None if not found
         """
         if not self.is_active():
-            return 0
+            return None
 
-        # Check if location exists based off of the name
-        # TODO: Possibly overwrite some equivalency function on the objects
-        # for a better comparison
-        if self.start.name == location.name:
-            return 1
-        elif self.end.name == location.name:
-            return 2
+        if self.start == location:
+            return self.end
+        elif self.end == location:
+            return self.start
         else:
-            return 0
+            return None
 
     def is_active(self):
         """

@@ -5,9 +5,9 @@ This file holds functions used in the creation of dialog for the game
 import time
 import sys
 import threading
-import msvcrt as m
 import pprint
 import logging
+import msvcrt as m
 from character import Character
 
 def read_dialog_script(dialog):
@@ -63,7 +63,7 @@ def list_box(title, items):
     :param title: str, the title for the list_box
     :param items: list, the list of items to be displayed
 
-    :returns the number selected by the player
+    :returns the 0 based index selection, -1 to move back
     """
     clear_speech_box()
     set_location_text(title)
@@ -72,6 +72,7 @@ def list_box(title, items):
     for i in items:
         text += str(count) + ". " + str(i) + "\n"
         count += 1
+    text += "0. Back\n"
     sys.stdout.write(text)
 
     return get_selection(len(items))
@@ -82,12 +83,12 @@ def get_selection(num_items):
 
     :param num_items: int, the total number of items that are being displayed
 
-    :return int, 0 based index of the list for the selection
+    :return int, 1 based index of the list for the selection
     """
     valid = False
     while not valid:
         key = m.getch()
-        if key in [str(x) for x in range(1, num_items + 1)]:
+        if key in [str(x) for x in range(0, num_items + 1)]:
             return int(key) - 1
 
 def typewriter(text, sleep_time=0.06, end="\n"):
@@ -121,6 +122,11 @@ def pause(seconds):
     :param seconds: float, num of seconds to sleep for
     """
     time.sleep(seconds)
+
+def set_title_bar(title, description=""):
+    sys.stdout.write(title + "\n")
+    if description:
+        sys.stdout.write(description + "\n")
 
 # TODO: Fix these next two methods to be a bit more scientific and not just print shit yo
 def set_location_text(location_text):
