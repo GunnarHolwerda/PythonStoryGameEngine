@@ -2,19 +2,20 @@
 Class to represent a location in the game
 """
 
-import json
+import logging
 import dialog as d
 import msvcrt as m
+from dscript import Dscript
 
 class Location:
     """
     Represents a location in the game
     """
 
-    def  __init__(self, dict):
-        self.name = dict['name']
-        self.active = dict['active']
-        self.id = dict['id']
+    def  __init__(self, mscript):
+        self.name = mscript['name']
+        self.active = mscript['active']
+        self.id = mscript['id']
         # Add ability to include examine text and change over time or use a dscript
         self.examine_text = "You are now in the " + self.name
         self.dscript = None
@@ -45,7 +46,7 @@ class Location:
 
         :param dscript: str, filename for dscript to be loaded
         """
-        self.dscript = json.load(file('dialog_scripts/' + dscript))
+        self.dscript = Dscript(dscript)
         self.has_changed = True
 
     def set_character(self, character):
@@ -109,7 +110,7 @@ class Location:
         # Display list box for the possible destinations
         selection = d.list_box("Move to...", destinations)
         # Updates the current location in the GameState
-        GameState.update_current_location(destinations[selection - 1].id)
+        GameState.update_current_location(destinations[selection].id)
 
     def examine(self):
         """
@@ -118,8 +119,19 @@ class Location:
         d.speech_box(self.examine_text)
 
     def talk(self):
+        """
+        Handles all logic for the taking action
+        """
         #TODO: Display talking points outlined in characters dscript
-        pass
+        talking_points = self.dscript.get_talking_points()
+        import pprint
+        logging.debug(pprint.pformat(talking_points))
+        index = d.list_box("Talk about", talking_points)
+        script = self.dscript.get_script_for_tp(index)
+        d.read_dialog_script(script)
+
+        # TODO: Show that a talking point has been clicked on, once it has
+        # been read by the player
 
     def present(self):
         #TODO: Create player object that has inventory
@@ -141,7 +153,7 @@ class Location:
             # This allows you to have an intro where the player talks to
             # themself, but no other character is present
             if self.dscript:
-                d.read_dialog_script(self.dscript['intro'])
+                d.read_dialog_script(self.dscript.get_intro())
             self.has_changed = False
 
         self.display_actions()

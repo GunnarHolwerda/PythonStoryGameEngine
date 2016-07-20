@@ -6,7 +6,8 @@ import time
 import sys
 import threading
 import msvcrt as m
-from pprint import pprint
+import pprint
+import logging
 from character import Character
 
 def read_dialog_script(dialog):
@@ -17,6 +18,7 @@ def read_dialog_script(dialog):
         # Return if no dialog given (i.e. no intro script)
         return
 
+    logging.debug(pprint.pformat(dialog))
     for line in dialog:
         char = Character.load_character(line['character'])
         speech_box(line['text'], speaker=char.name)
@@ -79,12 +81,14 @@ def get_selection(num_items):
     Waits for selection input from a list and returns the selection number
 
     :param num_items: int, the total number of items that are being displayed
+
+    :return int, 0 based index of the list for the selection
     """
     valid = False
     while not valid:
         key = m.getch()
         if key in [str(x) for x in range(1, num_items + 1)]:
-            return int(key)
+            return int(key) - 1
 
 def typewriter(text, sleep_time=0.06, end="\n"):
     """

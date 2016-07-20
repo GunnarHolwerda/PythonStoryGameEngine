@@ -79,8 +79,6 @@ class Map:
             elif edge.contains(location) == 2:
                 destinations.append(edge.start)
 
-        logging.debug(pprint.pformat(destinations))
-
         return destinations
 
     def load_location(self, location_id):

@@ -18,8 +18,5 @@
                 {"character": "pla", "text": "Don't worry, I will get to the bottom of this"}
             ]
         }
-    ],
-    "unlocks": [
-        {"type": "location", "id": "car", "action": "set_active"}
     ]
 }
