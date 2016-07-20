@@ -59,9 +59,14 @@ class GameState(object):
         # TODO: Event script should also specify map file at some point
         logging.debug("Loading in event script " + filename)
         escript = json.load(file("event_scripts/" + filename))
+        # Load map
+        GameState.load_map_file(escript['map'])
+        # Update current location
         GameState.CURRENT_LOCATION = GameState.GAME_MAP.load_location(escript['start_location'])
+        # Load characters
         Character.load_character_script(escript['character_script'])
 
+        # Initialize the first event
         GameState.EVENTS = escript['events']
         start_event = GameState.EVENTS[0]
         for loc in start_event['locations']:

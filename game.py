@@ -28,11 +28,8 @@ class Game(object):
         """
         # Initialize the logging for the game
         logging.basicConfig(filename="gamelog.log", level=logging.DEBUG, \
-        format='%(asctime)s - %(levelname)s - %(message)s')
+        format='%(levelname)s - %(message)s')
         #logging.disable(logging.CRITICAL) # Disables logging of messages below the level specified
-
-        # Load the map to create the graph of locations for the game
-        GameState.load_map_file("intro.map")
         GameState.start_event_script("event_script.escript")
 
 

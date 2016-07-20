@@ -21,5 +21,6 @@
 			]
 		}
 	],
-    "character_script": "character_script.cscript"
+    "character_script": "character_script.cscript",
+    "map": "intro.map"
 }
