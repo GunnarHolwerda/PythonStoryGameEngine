@@ -7,6 +7,7 @@ import logging
 import pprint
 from location import Location
 
+
 class Map(object):
     """
     Class that will create a graph of locations to be used for
@@ -23,7 +24,8 @@ class Map(object):
         Loads a JSON file that details the map of locations. Then
         creates the graph of locations to show where you can move from each location
 
-        :param filname: str, the name of the map file to be loaded
+        :param filename: the name of the map file to be loaded
+        :type filename: str
         """
         # Loads in file as JSON
         map_dict = json.load(file("locations\\maps\\" + filename))
@@ -42,7 +44,8 @@ class Map(object):
         """
         Adds a location to the graph
 
-        :param location: Location, the location object to add
+        :param location: the location object to add
+        :type location: Location
         """
         if not isinstance(location, Location):
             raise Exception("Non location was added to Map")

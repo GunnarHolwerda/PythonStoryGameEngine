@@ -2,38 +2,41 @@
 File that holds the class that represents the player
 """
 
+from item import Item
+
+
 class Player(object):
     """
     Class representing the player
     """
 
     def __init__(self):
-        self.inventory = {}
+        self.inventory = []
 
     def add_item(self, item):
         """
         Adds an item to the player's inventory
 
-        :param item: Item, the item to add
+        :param item: the item to add
+        :type item: Item
         """
-        if item.tag in self.inventory.keys():
-            raise Exception("Attempted to add item already in inventory")
-        self.inventory[item.tag] = item
+        assert isinstance(item, Item)
+        self.inventory.append(item)
 
     def remove_item(self, item):
         """
         Removes an item from the player's inventory
 
-        :param item: Item, the item to remove
-        """
-        if item.tag not in self.inventory.keys():
-            raise Exception("Attempted to remove item not in inventory")
-        del self.inventory[item.tag]
+        :param item: the item to remove
+        :type item: Item
 
-    def get_inventory_item_names(self):
+        :return the success of the removal. True if successful, False otherwise
+        :rtype: bool
         """
-        Returns a list of names from all items in the player's inventory
+        for index in xrange(0, len(self.inventory)):
+            if self.inventory[index] == item:
+                del self.inventory[index]
+                return True
 
-        :return list, the list of names for the items in the inventory
-        """
-        return [item.name for item in self.inventory]
+        return False
+

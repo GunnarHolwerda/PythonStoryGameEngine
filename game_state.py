@@ -9,6 +9,9 @@ from character import Character
 from item import Item
 from player import Player
 
+# TODO: Implement save feature
+
+
 class GameState(object):
     """
     This class represents the current state of the game. Keeps track of
@@ -28,7 +31,8 @@ class GameState(object):
         all dictionaries passed must contain the 'action' and 'type' keys
         to tell what sort of update must be completed
 
-        :param changes: list, list of changes dictionaries
+        :param changes: list of changes dictionaries
+        :type changes: list
         """
         # TODO: Figure out a better what to handle this
         # IDEA: Create class for each change then have a strategy pattern to
@@ -41,28 +45,21 @@ class GameState(object):
                 if change['action'] == 'set_active':
                     location.set_active()
 
-
-    @staticmethod
-    def load_map_file(filename):
-        """
-        Designates the loading of the map file to the actual Map class
-        """
-        # TODO: Possibly refactor this so that it isn't just a passthrough
-        GameState.GAME_MAP.load_map_file(filename)
-
     @staticmethod
     def initialize_game(escript):
         """
         Loads in map, character_script, item_script and intializes player object.
         Also sets the starting location of the game
 
-        :param escript: dict, dictionary loaded from escript that specifies files
+        :param escript: dictionary loaded from escript that specifies files
+        :type escript: dict
         """
         # Load map, characters, items, and player
         GameState.GAME_MAP.load_map_file(escript['map'])
         Character.load_character_script(escript['character_script'])
-        Item.load_items(escript['item_script'])
+        Item.load_item_script(escript['item_script'])
         GameState.PLAYER = Player()
+        # TODO: Add starting items to player specified in escript from starting_items
 
         # Update current location
         GameState.CURRENT_LOCATION = GameState.GAME_MAP.load_location(escript['start_location'])
@@ -74,7 +71,8 @@ class GameState(object):
         Event scripts outline the complete story of the game and what conversations and actions
         unlock what events. They also specify the map and starting location
 
-        :param filename: str, the filename of the eventscript in the event_scripts directory
+        :param filename: the filename of the eventscript in the event_scripts directory
+        :type filename: str
         """
         logging.debug("Loading in event script " + filename)
         escript = json.load(file("event_scripts/" + filename))
@@ -94,11 +92,12 @@ class GameState(object):
         GameState.CURRENT_LOCATION.start()
 
     @staticmethod
-    def update_current_location(new_location_id):
+    def update_current_location(new_location):
         """
         Sets the current location to the specified location in new_location_id
 
-        :param new_location_id: str, the location_id for the new curent location
+        :param new_location: the location_id for the new current location
+        :type new_location: str
         """
-        GameState.CURRENT_LOCATION = GameState.GAME_MAP.load_location(new_location_id)
+        GameState.CURRENT_LOCATION = new_location
         GameState.CURRENT_LOCATION.start()
