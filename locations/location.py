@@ -6,10 +6,10 @@ import logging
 import ui
 import msvcrt as m
 from dscript import Dscript
-from named_object import NamedObject
+from named_object import NamedObject, ValueComparison
 
 
-class Location(NamedObject, object):
+class Location(NamedObject, ValueComparison, object):
     """
     Represents a location in the game
     """

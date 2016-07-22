@@ -6,6 +6,7 @@ import json
 import logging
 import pprint
 from location import Location
+from named_object import ValueComparison
 
 
 class Map(object):
@@ -19,16 +20,18 @@ class Map(object):
         self.edges = []
         self.current_location = None
 
-    def load_map_file(self, filename):
+    def load_map_file(self, filename, directory="locations\\maps\\"):
         """
         Loads a JSON file that details the map of locations. Then
         creates the graph of locations to show where you can move from each location
 
         :param filename: the name of the map file to be loaded
         :type filename: str
+        :param directory: the directory to find the map file in
+        :type directory: str
         """
         # Loads in file as JSON
-        map_dict = json.load(file("locations\\maps\\" + filename))
+        map_dict = json.load(file(directory + filename))
 
         # Parses over the locations array in the file and adds each one
         for location in map_dict['locations']:
@@ -62,8 +65,13 @@ class Map(object):
         """
         if location_start_tag == location_end_tag:
             raise Exception("Attemted to add an Edge between the same location")
-        self.edges.append(
-            Edge(self.load_location(location_start_tag), self.load_location(location_end_tag)))
+
+        start_location = self.load_location(location_start_tag)
+        end_location = self.load_location(location_end_tag)
+        if Edge(end_location, start_location) in self.edges:
+            raise Exception("Attempted to add edge that already exists in reverse")
+
+        self.edges.append(Edge(start_location, end_location))
 
     def get_destinations_for_location(self, location_tag):
         """
@@ -93,7 +101,7 @@ class Map(object):
         return self.locations[location_tag]
 
 
-class Edge(object):
+class Edge(ValueComparison, object):
     """
     Represents an edge within the map from one location to another
     """

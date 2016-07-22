@@ -4,10 +4,10 @@ Represents a character in the game
 
 import json
 import logging
-from named_object import NamedObject
+from named_object import NamedObject, ValueComparison
 
 
-class Character(NamedObject, object):
+class Character(NamedObject, ValueComparison, object):
     """
     Represents a Character in the game, also keeps track of all
     characters in the campaign in Character.CHARACTERS

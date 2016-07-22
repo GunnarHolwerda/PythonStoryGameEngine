@@ -4,10 +4,10 @@ File that holds the class that represents an item
 
 import json
 import logging
-from named_object import NamedObject
+from named_object import NamedObject, ValueComparison
 
 
-class Item(NamedObject, object):
+class Item(NamedObject, ValueComparison, object):
     """
     Class representing an item
     """

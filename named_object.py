@@ -22,6 +22,8 @@ class NamedObject(object):
         """
         return self._name
 
+
+class ValueComparison(object):
     """
         Code necessary for checking if two locations are equal to another
         Found at: http://bit.ly/29sdPnH

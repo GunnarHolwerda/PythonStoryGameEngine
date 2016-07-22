@@ -1,9 +1,9 @@
 {
     "start_location": "law",
     "locations": [
-        { "id": "law", "name": "Law Office", "active": true},
-        { "id": "det", "name": "Detention Center", "active": true},
-        { "id": "car", "name": "Carnival", "active": false}
+      { "id": "law", "name": "Law Office", "active": true},
+      { "id": "det", "name": "Detention Center", "active": true},
+      { "id": "car", "name": "Carnival", "active": false}
     ],
     "edges": [
         { "start": "law", "end": "det"},
