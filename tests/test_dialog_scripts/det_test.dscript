@@ -1,0 +1,37 @@
+{
+  "intro": [
+    {"character": "det", "text": "Hey there buddy!"},
+    {"character": "pla", "text": "Howdy detective."}
+  ],
+  "talking_points": [
+    {
+      "title": "What Happened",
+      "script": [
+        {"character": "det", "text": "John Doe was murdered last night"},
+        {"character": "det", "text": "It was pretty brutal"},
+        {"character": "pla", "text": "That is unbelievable"}
+      ]
+    },
+    {
+      "title": "Victim",
+      "script": [
+        {"character": "det", "text": "John Doe was murdered last night"},
+        {"character": "det", "text": "It was pretty brutal"},
+        {"character": "pla", "text": "That is unbelievable"}
+      ]
+    }
+  ],
+  "reactions": [
+    {
+      "item_tag": "bad",
+      "script": [
+        {"character": "det", "text": "Nice badge dude"}
+      ]
+    },
+    {
+      "default_script": [
+        {"character": "det", "text":"Sorry buddy, I don't know what that is"}
+      ]
+    }
+  ]
+}
