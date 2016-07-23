@@ -65,7 +65,7 @@ class GameState(object):
         GameState.CURRENT_LOCATION = GameState.GAME_MAP.load_location(escript['start_location'])
 
     @staticmethod
-    def start_event_script(filename):
+    def start_event_script(filename, dir="event_scripts/"):
         """
         Initializes the current event script. One event script will be given for each campaign.
         Event scripts outline the complete story of the game and what conversations and actions
@@ -73,9 +73,11 @@ class GameState(object):
 
         :param filename: the filename of the eventscript in the event_scripts directory
         :type filename: str
+        :param dir: the directory to load the eventscript from
+        :type dir: str
         """
         logging.debug("Loading in event script " + filename)
-        escript = json.load(file("event_scripts/" + filename))
+        escript = json.load(file(dir + filename))
         # Load map, characters, items, and player
         GameState.initialize_game(escript)
 
@@ -96,8 +98,7 @@ class GameState(object):
         """
         Sets the current location to the specified location in new_location_id
 
-        :param new_location: the location_id for the new current location
-        :type new_location: str
+        :param new_location: the Location for the new current location
+        :type new_location: Location
         """
         GameState.CURRENT_LOCATION = new_location
-        GameState.CURRENT_LOCATION.start()

@@ -94,7 +94,11 @@ class Map(object):
         """
         Get the location object for the map using the location_tag
 
-        :param location_tag: str, the tag of the location you want to load
+        :param location_tag: the tag of the location you want to load
+        :type location_tag: str
+
+        :return: the location for the location_tag
+        :rtype: Location
         """
         if location_tag not in self.locations.keys():
             raise Exception("Could not find location with tag: %s" % location_tag)

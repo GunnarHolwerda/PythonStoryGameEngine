@@ -14,7 +14,7 @@ class Location(NamedObject, ValueComparison, object):
     Represents a location in the game
     """
 
-    def  __init__(self, mscript):
+    def __init__(self, mscript):
         super(Location, self).__init__(mscript['name'])
         self.active = mscript['active']
         self.tag = mscript['id']
@@ -95,6 +95,7 @@ class Location(NamedObject, ValueComparison, object):
 
         # Updates the current location in the GameState
         GameState.update_current_location(selection)
+        GameState.CURRENT_LOCATION.start()
 
     def examine(self):
         """
